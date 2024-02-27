@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.jeecg.modules.txal.mapper.TxalAnliMapper">
+    <select id="newAnliCode" resultType="java.lang.String">
+        select max(code)
+        from txal_anli
+        where techtype_pid=#{pcode,jdbcType=VARCHAR}
+          and techtype_id=#{code,jdbcType=VARCHAR}
+    </select>
+</mapper>

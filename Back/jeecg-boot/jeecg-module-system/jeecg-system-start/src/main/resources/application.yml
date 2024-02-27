@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: jeecg-system
+  profiles:
+    active: '@profile.name@'
+  mvc:
+    async:
+      request-timeout: 600000

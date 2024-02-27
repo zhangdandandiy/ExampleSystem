@@ -1,0 +1,19 @@
+当然也可以直接通过修改\node_modules\pdfjs - dist\es5\build\pdf.js第9540行达到想要的效果
+
+
+key: "request",
+  value: function request (args) {
+    var xhr = this.getXhr();
+    var xhrId = this.currXhrId++;
+    var pendingRequest = this.pendingRequests[xhrId] = {
+      xhr: xhr
+    };
+    xhr.open("GET", this.url); ----修改为----> xhr.open("GET", this.url, true);
+    xhr.withCredentials = this.withCredentials;
+    for (var property in this.httpHeaders) {
+      var value = this.httpHeaders[property];
+      if (typeof value === "undefined") {
+        continue;
+      }
+      xhr.setRequestHeader(property, value);
+    }

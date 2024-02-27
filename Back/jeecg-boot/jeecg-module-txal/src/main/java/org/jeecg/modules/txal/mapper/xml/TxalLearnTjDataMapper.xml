@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.jeecg.modules.txal.mapper.TxalLearnTjDataMapper">
+    <resultMap id="TxalLearnTjData" type="org.jeecg.modules.txal.entity.TxalLearnTjData" />
+
+    <select id="queryOrgTj"  resultMap="TxalLearnTjData" parameterType="java.util.Map">
+        select txal_learninfo.org_code as code, depart_name as name, count(1) as total
+        from txal_learninfo, sys_depart, txal_anli
+        <where>
+            txal_learninfo.org_code=sys_depart.org_code and txal_learninfo.anli_id=txal_anli.id
+            <if test="anliname!=null and anliname!=''">
+                AND txal_anli.name like concat('%',#{anliname, jdbcType=VARCHAR},'%')
+            </if>
+            <if test="percode!=null and percode!=''">
+                AND txal_anli.percode =#{percode, jdbcType=VARCHAR}
+            </if>
+            <if test="keywords!=null and keywords!=''">
+                AND txal_anli.keywords like concat('%',#{keywords, jdbcType=VARCHAR},'%')
+            </if>
+            <if test="anlicode!=null and anlicode!=''">
+                AND txal_anli.code =#{anlicode, jdbcType=VARCHAR}
+            </if>
+            <if test="startTime!=null">
+                AND learn_time <![CDATA[ >= ]]>#{startTime, jdbcType=DATE}
+            </if>
+            <if test="endTime!=null">
+                AND learn_time <![CDATA[ <= ]]>#{endTime, jdbcType=DATE}
+            </if>
+        </where>
+        group by txal_learninfo.org_code, depart_name
+        order by code
+    </select>
+    <select id="queryUserTj"  resultMap="TxalLearnTjData" parameterType="java.util.Map">
+        select txal_learninfo.learn_user_code as code, txal_learninfo.learn_user_name as name, count(1) as total
+        from txal_learninfo,  txal_anli
+        <where>
+            txal_learninfo.anli_id=txal_anli.id
+            <if test="anliname!=null and anliname!=''">
+                AND txal_anli.name like concat('%',#{anliname, jdbcType=VARCHAR},'%')
+            </if>
+            <if test="percode!=null and percode!=''">
+                AND txal_anli.percode =#{percode, jdbcType=VARCHAR}
+            </if>
+            <if test="keywords!=null and keywords!=''">
+                AND txal_anli.keywords like concat('%',#{keywords, jdbcType=VARCHAR},'%')
+            </if>
+            <if test="anlicode!=null and anlicode!=''">
+                AND txal_anli.code =#{anlicode, jdbcType=VARCHAR}
+            </if>
+            <if test="orgcode!=null and orgcode!=''">
+                AND txal_anli.org_code =#{orgcode, jdbcType=VARCHAR}
+            </if>
+            <if test="startTime!=null">
+                AND learn_time <![CDATA[ >= ]]>#{startTime, jdbcType=DATE}
+            </if>
+            <if test="endTime!=null">
+                AND learn_time <![CDATA[ <= ]]>#{endTime, jdbcType=DATE}
+            </if>
+        </where>
+        group by txal_learninfo.learn_user_code, txal_learninfo.learn_user_name
+        order by total desc,code
+    </select>
+    <select id="queryUserTjTop10"  resultMap="TxalLearnTjData" parameterType="java.util.Map">
+        select txal_learninfo.learn_user_code as code, txal_learninfo.learn_user_name as name, count(1) as total
+        from txal_learninfo,  txal_anli
+        <where>
+            txal_learninfo.anli_id=txal_anli.id
+            <if test="anliname!=null and anliname!=''">
+                AND txal_anli.name like concat('%',#{anliname, jdbcType=VARCHAR},'%')
+            </if>
+            <if test="percode!=null and percode!=''">
+                AND txal_anli.percode =#{percode, jdbcType=VARCHAR}
+            </if>
+            <if test="keywords!=null and keywords!=''">
+                AND txal_anli.keywords like concat('%',#{keywords, jdbcType=VARCHAR},'%')
+            </if>
+            <if test="anlicode!=null and anlicode!=''">
+                AND txal_anli.code =#{anlicode, jdbcType=VARCHAR}
+            </if>
+            <if test="orgcode!=null and orgcode!=''">
+                AND txal_anli.org_code =#{orgcode, jdbcType=VARCHAR}
+            </if>
+            <if test="startTime!=null">
+                AND learn_time <![CDATA[ >= ]]>#{startTime, jdbcType=DATE}
+            </if>
+            <if test="endTime!=null">
+                AND learn_time <![CDATA[ <= ]]>#{endTime, jdbcType=DATE}
+            </if>
+        </where>
+        group by txal_learninfo.learn_user_code, txal_learninfo.learn_user_name
+        order by total desc,code
+        limit 10
+    </select>
+
+</mapper>
